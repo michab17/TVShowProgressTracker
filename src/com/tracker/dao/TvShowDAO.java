@@ -152,13 +152,16 @@ public class TvShowDAO implements TvShowInterfaceDAO {
 
 	@Override
 	public boolean updateName(int showId, String userInput) {
-
 		try (PreparedStatement pstmt = conn.prepareStatement("update tv_show set name = ? where show_id = ?;");) {
 
 			pstmt.setString(1, userInput);
 			pstmt.setInt(2, showId);
 
-			return true;
+			int rowsAffected = pstmt.executeUpdate();
+
+			if (rowsAffected > 0) {
+				return true;
+			}
 
 		} catch (SQLException e) {
 			System.out.println("Connection Failed!");
@@ -168,16 +171,26 @@ public class TvShowDAO implements TvShowInterfaceDAO {
 		return false;
 	}
 
+//	int rowsAffected = pstmt.executeUpdate();
+//
+//    if (rowsAffected > 0) {
+//        return true;
+//    }"
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
 	public boolean updateDescription(int showId, String userInput) {
-		try (PreparedStatement pstmt = conn.prepareStatement("update tv_show set description = ? where show_id = ?;");) {
+		try (PreparedStatement pstmt = conn
+				.prepareStatement("update tv_show set description = ? where show_id = ?;");) {
 
 			pstmt.setString(1, userInput);
 			pstmt.setInt(2, showId);
 
-			return true;
+			int rowsAffected = pstmt.executeUpdate();
+
+			if (rowsAffected > 0) {
+				return true;
+			}
 
 		} catch (SQLException e) {
 			System.out.println("Connection Failed!");
@@ -194,12 +207,16 @@ public class TvShowDAO implements TvShowInterfaceDAO {
 	@Override
 	public boolean updateEpisodeCount(int showId, int userInput) {
 
-		try (PreparedStatement pstmt = conn.prepareStatement("update tv_show set episode_count = ? where show_id = ?;");) {
+		try (PreparedStatement pstmt = conn
+				.prepareStatement("update tv_show set episode_count = ? where show_id = ?;");) {
 
 			pstmt.setInt(1, userInput);
 			pstmt.setInt(2, showId);
 
-			return true;
+			int rowsAffected = pstmt.executeUpdate();
+			if (rowsAffected > 0) {
+				return true;
+			}
 
 		} catch (SQLException e) {
 			System.out.println("Connection Failed!");
