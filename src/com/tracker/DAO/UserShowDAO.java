@@ -2,6 +2,8 @@ package com.tracker.DAO;
 
 import java.util.List;
 
+import com.tracker.model.UserShow;
+
 public interface UserShowDAO {
 	
 	public List<UserShow> getShowByUserId(int userId);

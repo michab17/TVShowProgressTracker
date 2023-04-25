@@ -13,7 +13,7 @@ public class ConnectionManager {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://localhost:3306/new_progress_tracker";
             String username = "root";
-            String password = "root@mysql";
+            String password = "root";
             connection = DriverManager.getConnection(url, username, password);
         } catch(SQLException | ClassNotFoundException e) {
             e.printStackTrace();

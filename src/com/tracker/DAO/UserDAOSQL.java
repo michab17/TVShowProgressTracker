@@ -33,7 +33,7 @@ public class UserDAOSQL implements UserDAO {
 	}
 
 	@Override
-	public User getUser(User searchUser) {
+	public User getUser(int userId) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
@@ -43,7 +43,7 @@ public class UserDAOSQL implements UserDAO {
 		
 		try {
 			pstmt = conn.prepareStatement(queryStr);
-			pstmt.setInt(1, searchUser.getId());
+			pstmt.setInt(1, userId);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -143,7 +143,7 @@ public class UserDAOSQL implements UserDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		String sql = "Select user_id, username , role, password from User where User.username = ? ";
+		String sql = "Select user_id, username , role, password from User where User.username = ? and User.password = ?";
 		
 		int storedId = -1;
 		String storedName = null;
@@ -154,6 +154,7 @@ public class UserDAOSQL implements UserDAO {
 			 pstmt = conn.prepareStatement(sql);
 			 
 			 pstmt.setString(1, user.getName());
+			 pstmt.setString(2, user.getPassword());
 			 rs = pstmt.executeQuery();
 			 
 			 while(rs.next()) {
