@@ -1,6 +1,6 @@
 package com.tracker.app;
 
-import com.tracker.dao.TvShowDAO;
+import com.tracker.DAO.TvShowDAO;
 
 public class Main {
 
