@@ -97,7 +97,6 @@ public class UserShowDAOSQL implements UserShowDAO {
 			pstmt.setInt(1, userInput);
 			pstmt.setInt(2, userId);
 			pstmt.setInt(3, showId);
-			pstmt.executeUpdate();
 			
 			int rowsAffected = pstmt.executeUpdate();
 
@@ -118,7 +117,6 @@ public class UserShowDAOSQL implements UserShowDAO {
 			pstmt.setInt(1, userInput);
 			pstmt.setInt(2, userId);
 			pstmt.setInt(3, showId);
-			pstmt.executeUpdate();
 			
 			int rowsAffected = pstmt.executeUpdate();
 

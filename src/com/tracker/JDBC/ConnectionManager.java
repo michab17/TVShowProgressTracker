@@ -11,7 +11,7 @@ public class ConnectionManager {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/student_grade_book";
+            String url = "jdbc:mysql://localhost:3306/new_progress_tracker";
             String username = "root";
             String password = "root";
             connection = DriverManager.getConnection(url, username, password);
