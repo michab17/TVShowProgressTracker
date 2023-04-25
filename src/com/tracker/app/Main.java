@@ -2,7 +2,7 @@ package com.tracker.app;
 
 import java.util.List;
 
-import com.tracker.DAO.TvShowDAO;
+import com.tracker.DAO.TvShowDAOSQL;
 import com.tracker.DAO.UserDAO;
 import com.tracker.DAO.UserDAOSQL;
 import com.tracker.model.User;
@@ -13,7 +13,7 @@ public class Main {
 	public static void main(String[] args) {
 		System.out.println("Hello World");
 
-		TvShowDAO tv = new TvShowDAO();
+		TvShowDAOSQL tv = new TvShowDAOSQL();
 
 		System.out.println(tv.getAllShows());
 

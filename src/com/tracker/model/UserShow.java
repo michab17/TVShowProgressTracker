@@ -1,4 +1,4 @@
-package com.tracker.DAO;
+package com.tracker.model;
 
 public class UserShow {
 	private int userId;
