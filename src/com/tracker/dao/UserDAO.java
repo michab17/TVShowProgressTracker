@@ -1,5 +1,21 @@
 package com.tracker.DAO;
 
-public class UserDAO {
+import java.util.List;
 
+import com.tracker.model.User;
+
+public interface UserDAO {
+	
+	public User login(User user);
+	
+	public boolean createUser(User user);
+	
+	public User getUser(User user);
+	
+	public boolean removeUser(User user);
+	
+	public boolean updateUser(int studentId, String field, String value);
+	
+	public List<User> getAllUsers();
+	
 }
