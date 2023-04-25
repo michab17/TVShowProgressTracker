@@ -16,6 +16,7 @@
     -- description
 	-- total # of episodes
     
+create database new_progress_tracker;
 use new_progress_tracker;
     
 create table user(
