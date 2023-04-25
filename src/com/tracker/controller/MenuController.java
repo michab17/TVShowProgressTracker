@@ -2,6 +2,8 @@ package com.tracker.controller;
 
 import java.util.Scanner;
 
+import com.tracker.DAO.UserDAOSQL;
+import com.tracker.model.User;
 import com.tracker.utility.ConsoleColors;
 
 public class MenuController {
@@ -9,6 +11,8 @@ public class MenuController {
 	static Scanner input = new Scanner(System.in);
 	
 	static User activeAccount; // need user model
+	
+	static UserDAOSQL uds = new UserDAOSQL();
 	
 	public static void startMenu() {
         String choice;
@@ -58,7 +62,9 @@ public class MenuController {
 			
 			password = input.nextLine();
 			
-			if (userDAOSQL.createUser(username, password)) {// need a create user method 
+			User user = new User(0, username, password, "user");
+			
+			if (uds.createUser(user)) {// need a create user method 
 				System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Account successfully created, please log in");
 				
 				startMenu();
@@ -81,10 +87,15 @@ public class MenuController {
         System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "Please enter your password:\n");
 
         password = input.nextLine();
+        
+        User user = new User();
+        
+        user.setName(username);
+        user.setPassword(password);
 
-        if (userDAOSQL.checkCredentials(username, password)) { // need a method to check if the users credentials match a row in the database
-            activeAccount = userDAOSQL.getUser(username); // need a method to get a user by their username
-            System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "Log in successful!\n");
+        if (uds.login(user) != null) { // need a method to check if the users credentials match a row in the database
+            activeAccount = uds.login(user); // need a method to get a user by their username
+            System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Log in successful!\n");
             if (activeAccount.getRole().equals("Admin")) { // need a role getter on the user class
             	adminMenu();
             } else {

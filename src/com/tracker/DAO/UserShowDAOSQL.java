@@ -18,7 +18,7 @@ public class UserShowDAOSQL implements UserShowDAO {
 		List<UserShow> userShow = new ArrayList<UserShow>();
 		
 		try {
-			PreparedStatement pstmt = conn.prepareStatement("select user_id, show_id, ts.name, current_episode, ts.episode_count from user_show us join tv_show ts on ts.show_id = us.show_id where user_id = ?");
+			PreparedStatement pstmt = conn.prepareStatement("select user_id, us.show_id, ts.name, current_episode, ts.episode_count from user_show us join tv_show ts on ts.show_id = us.show_id where user_id = ?");
 			pstmt.setInt(1, userId);
 			
 			ResultSet rs = pstmt.executeQuery();
