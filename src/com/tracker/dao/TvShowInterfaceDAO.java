@@ -7,8 +7,9 @@ import com.tracker.model.TvShow;
 public interface TvShowInterfaceDAO {
 	
 	public List<TvShow> getAllShows();
-	public List<TvShow> getShowbyId(int showId);
+	public TvShow getShowbyId(int showId);
 	public int updateShowById(int showId, int userInput);
+	public void updateDescription(int showId, String userInput);
 	
 	
 
