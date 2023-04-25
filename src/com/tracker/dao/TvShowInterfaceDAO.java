@@ -1,4 +1,4 @@
-package com.tracker.dao;
+package com.tracker.DAO;
 
 import java.util.List;
 
