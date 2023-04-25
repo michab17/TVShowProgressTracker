@@ -74,27 +74,6 @@ public class TvShowDAO implements TvShowInterfaceDAO {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public boolean updateDescription(int showId, String userInput) {
-		try {
-			PreparedStatement pstmt = conn.prepareStatement("update tv_show set description = ? where show_id = ?;");
-			pstmt.setString(1, userInput);
-			pstmt.setInt(2, showId);
-
-			return true;
-
-		} catch (SQLException e) {
-			System.out.println("Connection Failed!");
-			e.printStackTrace();
-		}
-
-		return false;
-		// update tv_show set description = "Drugs N' Money" where show_id = 1;
-
-	}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-	@Override
 	public String getShowName(int showId) {
 
 		String name = "NULL";
@@ -140,6 +119,94 @@ public class TvShowDAO implements TvShowInterfaceDAO {
 			e.printStackTrace();
 		}
 		return description;
+	}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////	
+
+	@Override
+	public int getShowEpisodeCount(int showId) {
+
+		int epiCount = -1;
+
+		try {
+			PreparedStatement pstmt = conn.prepareStatement("select * from tv_show where show_id = ?");
+			pstmt.setInt(1, showId);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+
+				epiCount = rs.getInt("episode_count");
+
+			}
+			rs.close();
+		} catch (SQLException e) {
+			System.out.println("Connection Failed!");
+			e.printStackTrace();
+		}
+
+		return epiCount;
+	}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////	
+
+	@Override
+	public boolean updateName(int showId, String userInput) {
+
+		try (PreparedStatement pstmt = conn.prepareStatement("update tv_show set name = ? where show_id = ?;");) {
+
+			pstmt.setString(1, userInput);
+			pstmt.setInt(2, showId);
+
+			return true;
+
+		} catch (SQLException e) {
+			System.out.println("Connection Failed!");
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+	@Override
+	public boolean updateDescription(int showId, String userInput) {
+		try (PreparedStatement pstmt = conn.prepareStatement("update tv_show set description = ? where show_id = ?;");) {
+
+			pstmt.setString(1, userInput);
+			pstmt.setInt(2, showId);
+
+			return true;
+
+		} catch (SQLException e) {
+			System.out.println("Connection Failed!");
+			e.printStackTrace();
+		}
+
+		return false;
+// update tv_show set description = "Drugs N' Money" where show_id = 1;
+
+	}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////	
+
+	@Override
+	public boolean updateEpisodeCount(int showId, int userInput) {
+
+		try (PreparedStatement pstmt = conn.prepareStatement("update tv_show set episode_count = ? where show_id = ?;");) {
+
+			pstmt.setInt(1, userInput);
+			pstmt.setInt(2, showId);
+
+			return true;
+
+		} catch (SQLException e) {
+			System.out.println("Connection Failed!");
+			e.printStackTrace();
+		}
+
+		return false;
 	}
 
 }
