@@ -13,12 +13,13 @@ import com.tracker.model.TvShow;
 public class TvShowDAO implements TvShowInterfaceDAO {
 
 	private static final Connection conn = ConnectionManager.getConnection();
-	public ArrayList<TvShow> tvShowList = new ArrayList<>();
+	
 
 	@Override
 	public List<TvShow> getAllShows() {
-
+		ArrayList<TvShow> tvShowList = new ArrayList<>();
 		try {
+			
 			PreparedStatement pstmt = conn.prepareStatement("select * from tv_show");
 			ResultSet rs = pstmt.executeQuery();
 
