@@ -8,8 +8,9 @@ public interface TvShowInterfaceDAO {
 	
 	public List<TvShow> getAllShows();
 	public TvShow getShowbyId(int showId);
-	public int updateShowById(int showId, int userInput);
-	public void updateDescription(int showId, String userInput);
+	public String getShowName(int showId);
+	public String getShowDescription(int showId);
+	public boolean updateDescription(int showId, String userInput);
 	
 	
 
