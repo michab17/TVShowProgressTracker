@@ -1,17 +1,11 @@
 package com.tracker.app;
 
-import com.tracker.DAO.TvShowDAO;
+import com.tracker.controller.MenuController;
 
 public class Main {
 
 	public static void main(String[] args) {
-		System.out.println("Hello World");
-		
-		TvShowDAO tv = new TvShowDAO();
-		
-		System.out.println(tv.getAllShows());
-		
-
+		MenuController.startMenu();
 	}
 
 }
