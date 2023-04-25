@@ -3,8 +3,8 @@ package com.tracker.controller;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.tracker.DAO.UserShow;
 import com.tracker.DAO.UserShowDAOSQL;
+import com.tracker.model.UserShow;
 import com.tracker.utility.ConsoleColors;
 
 public class ShowController {

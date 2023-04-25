@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.tracker.JDBC.ConnectionManager;
+import com.tracker.model.UserShow;
 
 public class UserShowDAOSQL implements UserShowDAO {
 	private Connection conn = ConnectionManager.getConnection();
