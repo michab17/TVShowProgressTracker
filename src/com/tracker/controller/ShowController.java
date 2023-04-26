@@ -30,12 +30,14 @@ public class ShowController {
         }
         System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "+=============================================+");
         
-        System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "Enter the corresponding number for a show to see more information");
+        System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "Enter the corresponding number for a show to see more information or type b to go back");
         
         choice = input.nextLine();
         
         try {
-	        if (showList.get(Integer.parseInt(choice) - 1) != null) {
+        	if (choice.equalsIgnoreCase("b")) {
+        		MenuController.adminCheck(MenuController.activeAccount.getRole());
+        	} else if (showList.get(Integer.parseInt(choice) - 1) != null) {
 	            TvShow show = tvsd.getShowbyId(showList.get(Integer.parseInt(choice) - 1).getShowId());
 	
 	            viewShow(input, show);
@@ -43,17 +45,18 @@ public class ShowController {
 	            System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Please enter a valid input!");
 	        }
         } catch (Exception e) {
-        	
+        	Message.error("Please enter a number corresponding to a show!");
         }
 	}
 	
 	public static void viewShow(Scanner input, TvShow show) {
 		String choice;
+		int userId = MenuController.activeAccount.getId();
 		
 		System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "Show Name: " + show.getName());
 		System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "Show Description : " + show.getDescription());
 		
-		double currentEpisode = usds.getCurrentEpisode(show.getShow_id(), MenuController.activeAccount.getId());
+		double currentEpisode = usds.getCurrentEpisode(show.getShow_id(), userId);
 		double totalEpisode = show.getEpisodeCount();
 		
 		Message.title("Your current Episode: " + (int) currentEpisode);
@@ -70,7 +73,7 @@ public class ShowController {
 				System.out.print("-");
 			}
 		}
-		System.out.print("]");
+		System.out.println("]");
 		
 		Message.message("1. Update current episode");
 		Message.message("2. Delete show");
@@ -89,7 +92,7 @@ public class ShowController {
 				try {
 					int newEpisodeNumber = Integer.parseInt(choice);
 					
-					if (usds.updateCurrentEpisode(newEpisodeNumber, MenuController.activeAccount.getId(), show.getShow_id())) {
+					if (usds.updateCurrentEpisode(newEpisodeNumber, userId, show.getShow_id())) {
 						Message.message("Episode updated successfully!!");
 						viewShow(input, show);
 					} else {
@@ -102,10 +105,38 @@ public class ShowController {
 				}
 			}
 			case "2" -> {
-				
+				if (usds.deleteUserShow(show.getShow_id(), userId)) {
+					Message.message("Show successfully deleted!");
+					viewShows(input);
+				} else {
+					Message.error("The Show could not be deleted");
+					viewShow(input, show);
+				}
 			}
 			case "3" -> {
+				int rating = usds.getRating(show.getShow_id(), userId);
+				if (rating != -1) {
+					Message.message("Your current rating for " + show.getName() + " is " + rating);
+				}
+				Message.message("Please enter your desired rating");
 				
+				choice = input.nextLine();
+				
+				try {
+					int newRating = Integer.parseInt(choice);
+					
+					if (usds.updateRating(show.getShow_id(), userId, newRating) && newRating <= 5 && newRating >= 1) {
+						Message.message("Rating updated successfully!!");
+						Message.message("Your new rating is now " + newRating);
+						viewShow(input, show);
+					} else {
+						Message.error("Please enter a number between 1 and 5");
+						viewShow(input, show);
+					}
+				} catch (Exception e) {
+					Message.error("Please enter a number between 1 and 5");
+					viewShow(input, show);
+				}
 			}
 			case "4" -> viewShows(input);
 			default -> {
@@ -116,7 +147,40 @@ public class ShowController {
 	}
 
 	public static void addShow(Scanner input) {
-		
+		String choice;
+        int counter = 1;
+        int userId = MenuController.activeAccount.getId();
+        
+        List<TvShow> showList = usds.getUntrackedShows(userId); // user model getUserId getter
+
+        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "+=============================================+");
+        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "|               PROGRESS TRACKER              |");
+        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "+=============================================+");
+        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "|                                             |");
+        System.out.printf("| %-28s %-9s |\n", "SHOW NAME", "EPISODE COUNT");
+        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "|                                             |");
+		for (TvShow show : showList) {
+            System.out.printf("|  %-2s %-30s %-8s |\n", counter++, show.getName(), show.getEpisodeCount());
+        }
+        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "+=============================================+");
+        
+        System.out.println(ConsoleColors.WHITE_BOLD_BRIGHT + "Enter the corresponding number for a show to see more information");
+        
+        choice = input.nextLine();
+        
+        try {
+        	int showId = showList.get(Integer.parseInt(choice) - 1).getShow_id();
+        	
+        	if(usds.addUserShow(showId, userId)) {
+        		Message.message("Show successfully added!");
+        		MenuController.adminCheck(MenuController.activeAccount.getRole());
+        	} else {
+        		Message.error("Please enter a number corresponding to a show!");
+        	}
+        		
+        } catch (Exception e) {
+        	Message.error("Please enter a number corresponding to a show!");
+        }
 	}
 	
 	public static void viewGlobalShows(Scanner input) {

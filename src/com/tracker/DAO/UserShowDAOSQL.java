@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.tracker.JDBC.ConnectionManager;
+import com.tracker.model.TvShow;
 import com.tracker.model.UserShow;
 
 public class UserShowDAOSQL implements UserShowDAO {
@@ -130,5 +131,70 @@ public class UserShowDAOSQL implements UserShowDAO {
 		}
 		
 		return false;
+	}
+
+	@Override
+	public boolean deleteUserShow(int showId, int userId) {
+		try(PreparedStatement pstmt = conn.prepareStatement("delete user_show from user_show where user_id = ? and show_id = ?");) {
+			pstmt.setInt(1, userId);
+			pstmt.setInt(2, showId);
+			
+			int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                return true;
+            }
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+
+	@Override
+	public boolean addUserShow(int showId, int userId) {
+		try(PreparedStatement pstmt = conn.prepareStatement("insert into user_show (user_id, show_id, rating) values (?, ?, null)");) {
+			pstmt.setInt(1, userId);
+			pstmt.setInt(2, showId);
+			
+			int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                return true;
+            }
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public List<TvShow> getUntrackedShows(int userId) {
+        List<TvShow> shows = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = conn.prepareStatement("with tracked_shows as (select ts.name from user_show us join tv_show ts on us.show_id = ts.show_id where user_id = ?) select * from tv_show where tv_show.name not in (select * from tracked_shows)");
+            ps.setInt(1, userId);
+
+            ResultSet rs = ps.executeQuery();
+
+
+            while (rs.next()) {
+                int show_id = rs.getInt(1);
+                String name = rs.getString(2);
+                String description = rs.getString(3);
+                int episodeCount = rs.getInt(4);
+
+                shows.add(new TvShow(show_id, name, description, episodeCount));
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return shows;
 	}
 }
