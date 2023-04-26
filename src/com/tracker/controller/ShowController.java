@@ -188,6 +188,29 @@ public class ShowController {
 	}
 	
 	public static void editShow(Scanner input) {
-		
+			
+			Message.message("Enter the show Id.");
+			int showId = Integer.parseInt(input.nextLine());
+			Message.title("Enter 1: to edit description /n 2: to edit the numbers of show.");
+			String choice = input.nextLine();
+			switch(choice) {
+				case "1":
+					Message.message("Enter the descriptions of show: ");
+					String newDescription = input.nextLine();
+					tvsd.updateDescription(showId, newDescription);
+					break;
+				case "2":
+					Message.title("Enter the new numbers of show.");
+					int numbersOfShow = input.nextInt();
+					tvsd.updateEpisodeCount(showId, numbersOfShow);
+					break;
+				default:{
+					Message.error("Invalid Input");
+					editShow(input);
+					}
+				
+			}
+			Message.message("Show has been updated successful");
+			
 	}
 }
