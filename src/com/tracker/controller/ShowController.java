@@ -1,7 +1,9 @@
 package com.tracker.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 import com.tracker.DAO.TvShowDAO;
 import com.tracker.DAO.UserShowDAOSQL;
@@ -186,18 +188,22 @@ public class ShowController {
 	}
 	
 	public static void viewGlobalShows(Scanner input) {
-		List<TvShow> showList = tvsd.getAllShows(); // user model getUserId getter
+		HashMap<String, Integer> status = usds.getShowStatus();
 
-        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "+=============================================+");
-        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "|               PROGRESS TRACKER              |");
-        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "+=============================================+");
-        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "|                                             |");
-        System.out.printf("| %-28s %-9s |\n", "SHOW NAME", "EPISODE COUNT");
-        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "|                                             |");
-		for (TvShow show : showList) {
-            System.out.printf("| %-30s %-8s |\n", show.getName(), show.getEpisodeCount());
+        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "+=====================================================+");
+        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "|                   PROGRESS TRACKER                  |");
+        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "+=====================================================+");
+        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "|                                                     |");
+        System.out.printf("| %-26s %-11s %-12s |\n", "SHOW NAME", "COMPLETED", "IN PROGRESS");
+        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "|                                                     |");
+        status.forEach((k, v) -> System.out.printf("| %-30s %-11s %-8s |\n", k, v, (usds.getNumTrackingShow(k) - v)));
+        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "+=====================================================+");
+        
+        Message.message("Press any key to go back");
+        
+        if (input.nextLine() != null) {
+        	MenuController.adminMenu();
         }
-        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "+=============================================+");
 	}
 	
 	public static void editShow(Scanner input) {

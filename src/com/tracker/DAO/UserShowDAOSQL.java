@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.tracker.JDBC.ConnectionManager;
@@ -173,7 +174,7 @@ public class UserShowDAOSQL implements UserShowDAO {
 	@Override
 	public List<TvShow> getUntrackedShows(int userId) {
         List<TvShow> shows = new ArrayList<>();
-
+        
         try {
             PreparedStatement ps = conn.prepareStatement("with tracked_shows as (select ts.name from user_show us join tv_show ts on us.show_id = ts.show_id where user_id = ?) select * from tv_show where tv_show.name not in (select * from tracked_shows)");
             ps.setInt(1, userId);
@@ -196,5 +197,59 @@ public class UserShowDAOSQL implements UserShowDAO {
         }
         
         return shows;
+	}
+
+	@Override
+	public HashMap<String, Integer> getShowStatus() {
+		HashMap<String, Integer> status = new HashMap<>();
+		
+		try {
+            PreparedStatement ps = conn.prepareStatement("select ts.name, (ts.episode_count - us.current_episode) as status from user_show us join tv_show ts on us.show_id = ts.show_id");
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+            	String movieName = rs.getString("name");
+            	int epCount = rs.getInt("status");
+            	
+                if (status.containsKey(movieName) && epCount == 0) {
+                	status.compute(movieName, (k, v) -> v +=1);
+                } else if (epCount == 0) {
+                	status.put(movieName, 1);
+                } else if (!status.containsKey(movieName) && epCount != 0) {
+                	status.put(movieName, 0);
+                }
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+		
+		return status;
+	}
+
+	@Override
+	public int getNumTrackingShow(String showName) {
+		int numOfTrackers = -1;
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement("select count(us.user_id) from user_show us join tv_show ts on us.show_id = ts.show_id where ts.name = ? group by us.show_id; ");
+			pstmt.setString(1, showName);
+			
+			ResultSet rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+				numOfTrackers = rs.getInt(1);
+			}
+
+			rs.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return numOfTrackers;
 	}
 }

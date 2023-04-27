@@ -1,5 +1,6 @@
 package com.tracker.DAO;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.tracker.model.TvShow;
@@ -22,4 +23,8 @@ public interface UserShowDAO {
 	public boolean addUserShow(int showId, int userId);
 	
 	public List<TvShow> getUntrackedShows(int userId);
+	
+	public HashMap<String, Integer> getShowStatus();
+	
+	public int getNumTrackingShow(String showName);
 }
