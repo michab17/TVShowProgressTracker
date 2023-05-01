@@ -45,9 +45,11 @@ public class ShowController {
 	            viewShow(input, show);
 	        } else {
 	            System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Please enter a valid input!");
+	            viewShows(input);
 	        }
         } catch (Exception e) {
         	Message.error("Please enter a number corresponding to a show!");
+        	viewShows(input);
         }
 	}
 	
@@ -180,10 +182,12 @@ public class ShowController {
         		MenuController.adminCheck(MenuController.activeAccount.getRole());
         	} else {
         		Message.error("Please enter a number corresponding to a show!");
+        		addShow(input);
         	}
         		
         } catch (Exception e) {
         	Message.error("Please enter a number corresponding to a show!");
+        	addShow(input);
         }
 	}
 	
@@ -264,10 +268,12 @@ public class ShowController {
 	    		}
         	} else {
         		Message.error("Please enter a number corresponding to a show!");
+        		editShow(input);
         	}
         		
         } catch (Exception e) {
         	Message.error("Please enter a number corresponding to a show!");
+        	editShow(input);
         }
 	}
 }
