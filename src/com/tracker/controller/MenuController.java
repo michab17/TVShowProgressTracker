@@ -96,11 +96,7 @@ public class MenuController {
         if (uds.login(user) != null) { // need a method to check if the users credentials match a row in the database
             activeAccount = uds.login(user); // need a method to get a user by their username
             System.out.println(ConsoleColors.GREEN_BOLD_BRIGHT + "Log in successful!\n");
-            if (activeAccount.getRole().equals("Admin")) { // need a role getter on the user class
-            	adminMenu();
-            } else {
-            	userMenu();
-            }
+            adminCheck(activeAccount.getRole());
         } else {
             System.out.println(ConsoleColors.RED_BOLD_BRIGHT + "Log in unsuccessful, please try again\n");
             login();
@@ -169,5 +165,12 @@ public class MenuController {
             }
         }
 	}
-
+	
+	public static void adminCheck(String role) {
+		if (role.equals("admin")) { // need a role getter on the user class
+        	MenuController.adminMenu();
+        } else {
+        	MenuController.userMenu();
+        }
+	}
 }

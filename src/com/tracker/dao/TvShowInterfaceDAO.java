@@ -14,6 +14,5 @@ public interface TvShowInterfaceDAO {
 	public boolean updateName(int showId, String userInput);
 	public boolean updateDescription(int showId, String userInput);
 	public boolean updateEpisodeCount(int showId, int userInput);
-	
 
 }
