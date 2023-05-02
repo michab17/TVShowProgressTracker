@@ -231,15 +231,15 @@ public class UserShowDAOSQL implements UserShowDAO {
 		return status;
 	}
 	
-	public Map<String, Integer > getShowsAverage(){
-		Map<String, Integer > listShowsAvg = new HashMap<>();
+	public Map<String, Double > getShowsAverage(){
+		Map<String, Double > listShowsAvg = new HashMap<>();
 		try {
 			String sql = "select name, avg(rating) as show_average  from User_Show us join tv_show ts on us.show_id = ts.show_id group by us.show_id";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
 				String showName = rs.getString("name");
-				Integer showAverage = rs.getInt("show_average");
+				double showAverage = rs.getDouble("show_average");
 				
 				listShowsAvg.put(showName, showAverage);
 			}

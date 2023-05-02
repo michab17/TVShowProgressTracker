@@ -196,20 +196,11 @@ public class ShowController {
 	public static void viewGlobalShows(Scanner input) {
 		HashMap<String, Integer> status = usds.getShowStatus();
 		
-		Map<String, Integer > showsAverage = usds.getShowsAverage();
+		Map<String, Double > showsAverage = usds.getShowsAverage();
 		
 		Map<String, ArrayList<Integer> > shows = new HashMap<String, ArrayList<Integer> > ();
-		
-		for( Map.Entry<String , Integer> stat : status.entrySet() ) {
-			if(! shows.containsKey(stat.getKey())) {
-				String showName = stat.getKey();
-				Integer showStatus = stat.getValue();
-				ArrayList<Integer> arrayList =  new ArrayList<Integer>();
-				arrayList.add(0, showStatus ); //0: status
-				arrayList.add(1, showsAverage.get( showName )); //1: average
-				shows.put(showName , arrayList ) ;
-			}
-		}
+			
+		showsAverage.forEach((k, v) -> System.out.println(k + " - "+ v ));
 
         System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "+====================================================================+");
         System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "|                           PROGRESS TRACKER                         |");
@@ -217,13 +208,8 @@ public class ShowController {
         System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "|                                                                    |");
         System.out.printf("| %-26s %-11s %-12s %-11s |\n", "SHOW NAME", "COMPLETED", "IN PROGRESS", "AVERAGE RATING");
         System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "|                                                                    |");
-        shows.forEach((k, v) -> { 
-        	
-        	String showName = k;
-        	Integer currentShowStatus = v.get(0);
-        	Integer currentShowaverage = v.get(1);
-        	System.out.printf("| %-30s %-11s  %-8s  %6s       |\n", showName, currentShowStatus, (usds.getNumTrackingShow(showName) - currentShowStatus), currentShowaverage);
-        });
+        status.forEach((k, v) -> System.out.printf("| %-30s %-11s  %-8s  %6s       |\n", k, v, (usds.getNumTrackingShow(k) - v), showsAverage.get(k)));
+        
         System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "+====================================================================+");
         
         Message.message("Press any key to go back");
