@@ -1,7 +1,9 @@
 package com.tracker.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -193,15 +195,22 @@ public class ShowController {
 	
 	public static void viewGlobalShows(Scanner input) {
 		HashMap<String, Integer> status = usds.getShowStatus();
+		
+		Map<String, Double > showsAverage = usds.getShowsAverage();
+		
+		Map<String, ArrayList<Integer> > shows = new HashMap<String, ArrayList<Integer> > ();
+			
+		showsAverage.forEach((k, v) -> System.out.println(k + " - "+ v ));
 
-        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "+=====================================================+");
-        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "|                   PROGRESS TRACKER                  |");
-        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "+=====================================================+");
-        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "|                                                     |");
-        System.out.printf("| %-26s %-11s %-12s |\n", "SHOW NAME", "COMPLETED", "IN PROGRESS");
-        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "|                                                     |");
-        status.forEach((k, v) -> System.out.printf("| %-30s %-11s %-8s |\n", k, v, (usds.getNumTrackingShow(k) - v)));
-        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "+=====================================================+");
+        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "+====================================================================+");
+        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "|                           PROGRESS TRACKER                         |");
+        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "+====================================================================+");
+        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "|                                                                    |");
+        System.out.printf("| %-26s %-11s %-12s %-11s |\n", "SHOW NAME", "COMPLETED", "IN PROGRESS", "AVERAGE RATING");
+        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "|                                                                    |");
+        status.forEach((k, v) -> System.out.printf("| %-30s %-11s  %-8s  %6s       |\n", k, v, (usds.getNumTrackingShow(k) - v), showsAverage.get(k)));
+        
+        System.out.println(ConsoleColors.BLUE_BOLD_BRIGHT + "+====================================================================+");
         
         Message.message("Press any key to go back");
         

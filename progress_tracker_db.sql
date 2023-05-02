@@ -53,17 +53,37 @@ insert into user values(null, "eric", "eric@123", "admin");
 insert into user values(null, "travis", "password", "admin");
 insert into user values(null, "user", "password", "user");
 
+insert into user values
+	(null, "rachel", "rachel@123", "user"),
+	(null, "michael", "micahel@123", "user"),
+	(null, "luke", "luke@123", "user"),
+	(null, "noah", "noah@123", "user"),
+	(null, "olivia", "olivia@123", "user");
+
 insert into tv_show values(null, "Breaking Bad", null, 62);
 insert into tv_show values(null, "The 100", null, 70);
 insert into tv_show values(null, "Better Call Saul", null, 63);
 insert into tv_show values(null, "Queens Gambit", null, 8);
 insert into tv_show values(null, "Avatar: The Last Airbender", null, 61);
 
-insert into user_show values(1, 1, 38, null);
-insert into user_show values(2, 3, 45, null);
-insert into user_show values(3, 2, 70, 4);
-insert into user_show values(4, 5, 59, null);
-insert into user_show values(5, 4, 0, null);
+insert into user_show values(7, 1, 38, null);
+insert into user_show values(8, 1, 45, null);
+insert into user_show values(9, 1, 70, 4);
+insert into user_show values(10, 1, 59, null);
+insert into user_show values(11, 1, 0, null);
 
 select * from user u join user_show us on u.user_id = us.user_id join tv_show ts on us.show_id = ts.show_id;
+
+select * from user_show;
+
+select avg(rating) 
+from User_Show us join TV_show ts on us.show_id = ts.show_id
+-- where ts.name = "Breaking Bad"
+group by us.show_id;
+
+use new_progress_tracker;
+
+select name, avg(rating) as show_average  from User_Show us join tv_show ts on us.show_id = ts.show_id group by us.show_id;
+
+
 
