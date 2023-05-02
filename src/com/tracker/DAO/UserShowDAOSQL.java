@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.tracker.JDBC.ConnectionManager;
 import com.tracker.model.TvShow;
@@ -229,6 +230,25 @@ public class UserShowDAOSQL implements UserShowDAO {
 		
 		return status;
 	}
+	
+	public Map<String, Integer > getShowsAverage(){
+		Map<String, Integer > listShowsAvg = new HashMap<>();
+		try {
+			String sql = "select name, avg(rating) as show_average  from User_Show us join tv_show ts on us.show_id = ts.show_id group by us.show_id";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				String showName = rs.getString("name");
+				Integer showAverage = rs.getInt("show_average");
+				
+				listShowsAvg.put(showName, showAverage);
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return listShowsAvg;
+	}
 
 	@Override
 	public int getNumTrackingShow(String showName) {
@@ -252,4 +272,6 @@ public class UserShowDAOSQL implements UserShowDAO {
 		
 		return numOfTrackers;
 	}
+	
+	
 }
